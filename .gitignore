@@ -1,8 +1,0 @@
-**/.snakemake/**
-ignored/**
-to_do.txt
-#workflow/.snakemake/**
-workflow/datasets/**
-workflow/reports/**
-workflow/temp/**
-workflow/Snakefile
