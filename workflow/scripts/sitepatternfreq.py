@@ -34,18 +34,18 @@ def get_site_patterns(array_in,comb):
     taxa_groups = [list(x) for x in list(combinations(list(range(N_taxa)),comb))]
     
     for i in range(N_alns):
-        print(f"1: {array_in.shape}")
+        # print(f"1: {array_in.shape}")
         aln = array_in[i,:,:]
-        print(f"2: {aln.shape}")
+        # print(f"2: {aln.shape}")
         aln = aln[:,(aln != -15).any(axis=0)]
-        print(f"3: {aln.shape}")
-        Aln_length = aln.shape[1] 
+        # print(f"3: {aln.shape}")
+        Aln_length = aln.shape[1]
         for s in range(Aln_length):
-            # print(f'site {aln[:,s]} type: {type(aln[:,s])}')
             site = aln[:,s]
-            site = newSites(site)
+            newSite = newSites(site)
+            print(f"New Site: {newSite}")
             for group in taxa_groups:
-                array_key = '_'.join(map(str,group+site[group].tolist()))
+                array_key = '_'.join(map(str,group+newSite[group].tolist()))
                 struc_array[array_key][i]+=1/Aln_length
     return(struc_array.view((float,len(struc_array.dtype.names))))
 
@@ -56,7 +56,6 @@ def newSites(inputsite):
         if not i in nucleotides:
             nucleotides[i]=len(nucleotides)
         newSite.append(nucleotides[i])
-    # print(f"new site {np.array(newSite)} type: {type(newSite)}")
     return np.array(newSite)
 
 
@@ -68,7 +67,7 @@ def main():
     parser.add_argument( '--teout', help = "Test output",dest='TEOUT',type=str)
     parser.add_argument( '--co', help = "Taxa combinations",dest='COMB',type=int)
     args = parser.parse_args()
-    
+
     print(f"Reading input {args.TRAIN} and {args.TEST}")
     test_data = np.load(args.TEST)
     print(f"Finished reading {args.TEST}")

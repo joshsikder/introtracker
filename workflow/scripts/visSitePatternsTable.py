@@ -9,14 +9,14 @@ import os
 def stackArrays(arr_dir):
     my_arrays_64 = []
     my_arrays_256 = []
-    files = [f"{arr_dir}simulation{i}_spf.npy" for i in range(1,14)]
+    # files = [f"{arr_dir}simulation{i}_spf.npy" for i in range(1,14)]
+    files = ["temp/testNewSitePatterns.npy"]
     for item in files:
         meanArr = np.mean(np.load(item), axis=0)
         if meanArr.shape[0] == 64:
             my_arrays_64.append(meanArr)
         elif meanArr.shape[0] == 256:
             my_arrays_256.append(meanArr)
-        # my_arrays.append(meanArr)
     return(my_arrays_64, my_arrays_256, len(my_arrays_64), len(my_arrays_256))
 
 def loadArray(arr):
@@ -50,8 +50,8 @@ def main():
 
     arrays_64, arrays_256, num64, num256 = stackArrays(args.SPF)
     labels_64, labels_256 = createLabels(3), createLabels(4)
-    createFigure(arrays_64, labels_64, os.path.join(args.OUTPUT, "spf_64.png"), num64)
-    createFigure(arrays_256, labels_256, os.path.join(args.OUTPUT, "spf_256.png"), num256)
+    createFigure(arrays_64, labels_64, os.path.join(args.OUTPUT, "spf_64_table.png"), num64)
+    createFigure(arrays_256, labels_256, os.path.join(args.OUTPUT, "spf_256_table.png"), num256)
     # createFigure(loadArray(args.ARR1), labels_64, os.path.join(args.OUTPUT, "spf_64.png"),10)
     # createFigure(loadArray(args.ARR2), labels_256, os.path.join(args.OUTPUT, "spf_256.png"),10)
 
