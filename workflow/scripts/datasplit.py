@@ -11,7 +11,7 @@ def main():
     parser.add_argument( '--out', help = "Output directory",dest='OUTPUT')
     args = parser.parse_args()
 
-    print(f"Loading data: {args.DATA} and {args.LABELS}")
+    # print(f"Loading data: {args.DATA} and {args.LABELS}")
 
     X = np.load(args.DATA, mmap_mode="r")
     y = np.loadtxt(args.LABELS)

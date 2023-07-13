@@ -17,15 +17,36 @@ def main():
     X, y = loadData(args.DATA)
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33)
 
+    param_dist = {'n_estimators': randint(50,500),
+                  'max_depth': randint(1,200),
+                  'min_samples_split': [2,5,10,15,20,30],
+                  'min_samples_leaf': [1,2,3,4],
+                  'bootstrap': [True, False],
+                  'max_features': [None, 'sqrt', 'log2'],
+                  'criterion': ['gini','entropy','log_loss']}
+
     rf = RandomForestClassifier(n_jobs=16)
+    rf_random = RandomizedSearchCV(estimator=rf, param_distributions = param_dist, \
+    n_iter = 30, cv = 5, n_jobs = 16)
+
     rf.fit(X_train, y_train)
+    rf_random.fit(X_train, y_train)
+
+    best_rf = rf_random.best_estimator_
 
     y_pred = rf.predict(X_test)
+    y_pred_best = rf_random.predict(X_test)
 
     accuracy = accuracy_score(y_test, y_pred)
     precision = precision_score(y_test, y_pred, average='macro')
     recall = recall_score(y_test, y_pred, average='macro')
-    print(f"{args.DATA} Accuracy: {accuracy}, Precision: {precision}, Recall: {recall}")
+
+    accuracy_best = accuracy_score(y_test, y_pred_best)
+    precision_best = precision_score(y_test, y_pred_best, average='macro')
+    recall_best = recall_score(y_test, y_pred_best, average='macro')
+    print(f"{args.DATA} Base Accuracy: {accuracy}, Base Precision: {precision}, Base Recall: {recall}")
+    print(f"{args.DATA} Best Accuracy: {accuracy_best}, Best Precision: {precision_best}, Best Recall: {recall_best}")
+    print(f"Best hyperparameters: {rf_random.best_params_}\n")
 
 if __name__ == '__main__':
     main()

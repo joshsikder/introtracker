@@ -13,5 +13,4 @@
 
 source activate /nas/longleaf/home/jsikder/.conda/envs/josh
 
-echo tree2
-python /nas/longleaf/home/jsikder/phylo1/workflow/scripts/kerasModel.py -bs 1 -intro tree4 -out /nas/home/users/jsikder/phylo1/workflow/models/
+python /nas/longleaf/home/jsikder/phylo1/workflow/scripts/kerasModel.py -bs 1 -intro tree4 -out /nas/home/users/jsikder/introtracker/workflow/models
