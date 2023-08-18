@@ -6,3 +6,4 @@ workflow/datasets/**
 workflow/reports/**
 workflow/temp/**
 workflow/Snakefile
+workflow/models/**
