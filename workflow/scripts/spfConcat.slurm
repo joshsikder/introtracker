@@ -9,12 +9,12 @@
 #SBATCH --output=/nas/longleaf/home/jsikder/schriderlab/ignored/slurm_output/spfConcat_%A.out
 #SBATCH --error=/nas/longleaf/home/jsikder/schriderlab/ignored/slurm_output/spfConcat_%A.err
 
-for i in `seq 1 2`
+for i in `seq 1 13`
     do
-        python /nas/longleaf/home/jsikder/phylo1/workflow/scripts/numpyConcat.py \
-        /nas/longleaf/home/jsikder/phylo1/workflow/datasets/simulation${i}/preprocessing/simulation${i}_training_spf.npy \
-        /nas/longleaf/home/jsikder/phylo1/workflow/datasets/simulation${i}/preprocessing/simulation${i}_test_spf.npy \
-        --output /nas/longleaf/home/jsikder/phylo1/workflow/datasets/spfs/simulation${i}_spf.npy
+        python /nas/longleaf/home/jsikder/introtracker/workflow/scripts/numpyConcat.py \
+        /nas/longleaf/home/jsikder/introtracker/workflow/datasets/simulation${i}/preprocessing/simulation${i}_training_spf.npy \
+        /nas/longleaf/home/jsikder/introtracker/workflow/datasets/simulation${i}/preprocessing/simulation${i}_test_spf.npy \
+        --output /nas/longleaf/home/jsikder/introtracker/workflow/datasets/spfs/simulation${i}_spf.npy
     done
 
-sbatch --dependency=afterok:${SLURM_JOB_ID} --export=ALL /nas/longleaf/home/jsikder/phylo1/workflow/scripts/spfVis.slurm
+sbatch --dependency=afterok:${SLURM_JOB_ID} --export=ALL /nas/longleaf/home/jsikder/introtracker/workflow/scripts/spfVis.slurm

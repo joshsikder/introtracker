@@ -12,6 +12,6 @@
 conda activate visualization
 source activate visualization
 
-python /nas/longleaf/home/jsikder/phylo1/workflow/scripts/visSitePatterns.py \
---spf /nas/longleaf/home/jsikder/phylo1/workflow/datasets/spfs/ \
---output /nas/longleaf/home/jsikder/phylo1/workflow/reports/spf_heatmap.png
+python /nas/longleaf/home/jsikder/introtracker/workflow/scripts/visSitePatternsTable.py \
+--spf /nas/longleaf/home/jsikder/introtracker/workflow/datasets/spfs/ \
+--output /nas/longleaf/home/jsikder/introtracker/workflow/reports/

@@ -5,21 +5,32 @@ import argparse
 
 def main():
     parser = argparse.ArgumentParser(description='Splits data to be passed as input to the data generator for Keras')
-    parser.add_argument( '--indata', help = "Input data",dest='DATA')
-    parser.add_argument( '--inlabels', help = "Input labels",dest='LABELS')
-    parser.add_argument( '--batch', help = "Number of alignments per file",dest='BATCHSIZE')
-    parser.add_argument( '--out', help = "Output directory",dest='OUTPUT')
+    parser.add_argument( '--indata', '-d', help = "Input data",dest='DATA')
+    parser.add_argument( '--inlabels', '-l', help = "Input labels",dest='LABELS')
+    parser.add_argument( '--batch', '-bs', help = "Number of alignments per file",dest='BATCHSIZE')
+    parser.add_argument( '--out', '-o', help = "Output directory",dest='OUTPUT')
     args = parser.parse_args()
 
-    print(f"Loading data: {args.DATA} and {args.LABELS}")
+    # print(f"Loading data: {args.DATA} and {args.LABELS}")
 
     X = np.load(args.DATA, mmap_mode="r")
     y = np.loadtxt(args.LABELS)
+    indices = np.random.permutation(int(X.shape[2]))
+    X_shuffled = X[:,:,indices,:]
+
     batchsize = int(args.BATCHSIZE)
     train_idxs, test_idxs, train_labs, test_labs = train_test_split(range(len(y)), y, test_size=(int(len(y) / 3)), stratify=y)  # Split into train/test and stratify by label but we only care about the indices now
 
-    makeFiles(X, y, test_idxs, args.OUTPUT, batchsize, 'test')
-    makeFiles(X, y, train_idxs, args.OUTPUT, batchsize, 'train')
+    pool = Pool()
+
+    train_chunks = [train_idxs[i:i+batchsize] for i in range(0, len(train_idxs), batchsize)]
+    test_chunks = [test_idxs[i:i+batchsize] for i in range(0, len(test_idxs), batchsize)]
+
+    pool.starmap(makeFiles, [(X_shuffled, y, chunk, args.OUTPUT, batchsize, 'train') for chunk in train_chunks])
+    pool.starmap(makeFiles, [(X_shuffled, y, chunk, args.OUTPUT, batchsize, 'test') for chunk in test_chunks])
+
+    # makeFiles(X_shuffled, y, test_idxs, args.OUTPUT, batchsize, 'test')
+    # makeFiles(X_shuffled, y, train_idxs, args.OUTPUT, batchsize, 'train')
 
 
 def makeFiles(data, labels, idxs, path, batch_size, dataset):

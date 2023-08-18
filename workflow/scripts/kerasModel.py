@@ -22,7 +22,7 @@ parser.add_argument( '-intro', help = "Introgression scenario",dest='SCENARIO')
 parser.add_argument( '-out', help = "File Location of saved model(.h5)",dest='OUTPUT')
 args = parser.parse_args()
 
-print(tf.test.is_built_with_cuda());print(tf.config.list_physical_devices('GPU'))
+# print(tf.test.is_built_with_cuda());print(tf.config.list_physical_devices('GPU'))
 #CONFIG
 ntaxa = 4
 loci_count = 100
@@ -66,5 +66,6 @@ checkpoint = ModelCheckpoint('best_weights_batch_'+str(args.BATCHSIZE), monitor=
 verbose=0, save_best_only=True, save_weights_only=False, mode='auto', period=1)
 
 myModel.fit(x=training_generator, validation_data=validation_generator, callbacks=[checkpoint,earlystop], epochs=50)
-myModel.save(str(args.OUTPUT) + f"model_bs{args.BATCHSIZE}_introprop{args.SCENARIO}.h5")
+# myModel.save(str(args.OUTPUT) + f"model_bs{args.BATCHSIZE}_introprop{args.SCENARIO}.h5")
+myModel.save(f"{args.OUTPUT}/model_bs{args.BATCHSIZE}_introprop{args.SCENARIO}.h5")
 
