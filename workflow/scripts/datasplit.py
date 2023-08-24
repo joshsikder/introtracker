@@ -1,34 +1,45 @@
 import numpy as np
 from tqdm import tqdm
 from sklearn.model_selection import train_test_split
+from genutils import GeneralUtilities as gu
 import argparse
 
+
+
+def parseConfig(cfgFile, cfg):
+    configurations = gu.readDatasetsConfig(cfgFile)
+    return configurations[cfg]
 def main():
     parser = argparse.ArgumentParser(description='Splits data to be passed as input to the data generator for Keras')
-    parser.add_argument( '--indata', '-d', help = "Input data, stored under datasets/treeMatrices",dest='DATA')
-    parser.add_argument( '--inlabels', '-l', help = "Input labels, stored under datasets/treeLabels",dest='LABELS')
-    parser.add_argument( '--batch', '-bs', help = "Number of alignments per file",dest='BATCHSIZE')
-    parser.add_argument( '--numOutput', '-no', help = "Number of output files",dest='numOutput',type=int, required = false, default = None)
-    parser.add_argument( '--shuffle', '-sh', help = "Shuffle output columns in second index (120000)", dest = 'SHUFFLE', default = None, type=bool)
-    parser.add_argument( '--out', '-o', help = "Output directory",dest='OUTPUT')
-    parser.add_argument( '--out2', '-o2', help = "Output directory2",dest='OUTPUT2', required = False, default = None)
+    parser.add_argument( '--config-file', '-cf', help = "Configuration filepath",dest='configfile', required = True, type=str)
+    parser.add_argument( '--config', '-c', help = "Set of configurations",dest='config', required = True, type=str)
     args = parser.parse_args()
+    
+    cfgFile = args.configfile
+    cfg = args.config
+    # print(f'{cfg}: {parseConfig(cfgFile, cfg)}')
+    dataset = parseConfig(cfgFile, cfg)
+    dataPath = dataset['data']
+    labelsPath = dataset['labels']
+    batchsize = dataset['batch_size']
+    numOutput = dataset['num_output_files']
+    shuffle = dataset['shuffle']
+    outputPath = dataset['output_dir']
+    outputPath2 = dataset['output_dir_2']
 
-    print(f"Loading data: {args.DATA} and {args.LABELS}")
+    print(f"Loading data: {dataPath} and {labelsPath}")
 
-    X = np.load(args.DATA, mmap_mode="r")
-    y = np.loadtxt(args.LABELS)
+    X = np.load(dataPath, mmap_mode="r")
+    y = np.loadtxt(labelsPath)
 
-    batchsize = int(args.BATCHSIZE)
     train_idxs, test_idxs, train_labs, test_labs = train_test_split(range(len(y)), y, test_size=(int(len(y) / 3)), stratify=y)  # Split into train/test and stratify by label but we only care about the indices now
 
-    makeFiles(X, y, test_idxs, args.OUTPUT, args.OUTPUT2, batchsize, args.SHUFFLE, 'test', args.numOutput)
-    makeFiles(X, y, train_idxs, args.OUTPUT, args.OUTPUT2, batchsize, args.SHUFFLE, 'train', args.numOutput)
+    makeFiles(X, y, test_idxs, outputPath, outputPath2, batchsize, shuffle, 'test', numOutput)
+    makeFiles(X, y, train_idxs, outputPath, outputPath2, batchsize, shuffle, 'train', numOutput)
 
 
 def makeFiles(data, labels, idxs, path, path2, batch_size, shuffle, dataset, numOut):
     inds = idxs
-    # Populate
     ind_arrays = []
     if numOut:
         while len(inds) >= batch_size and len(ind_arrays) < numOut:
