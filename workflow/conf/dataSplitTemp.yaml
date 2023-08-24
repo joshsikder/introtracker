@@ -1,9 +1,9 @@
 - name: temptree
   data: datasets/treeMatrices/tree1_matrices.npy
-  labels: datasets/treeLabels/temptree.txt
+  labels: datasets/treeLabels/tree1.txt
   batch_size: 1
   num_output_files: 3000
-  shuffle: False
+  shuffle: True
   output_dir: /work/users/j/s/jsikder/fordan/temp3
   output_dir_2: None
 ---
@@ -14,4 +14,31 @@
   num_output_files: 300
   shuffle: False
   output_dir: /work/users/j/s/jsikder/fordan/tree1
+  output_dir_2: None
+---
+- name: tree2
+  data: datasets/treeMatrices/tree2_matrices.npy
+  labels: datasets/treeLabels/tree2.txt
+  batch_size: 1
+  num_output_files: 300
+  shuffle: False
+  output_dir: /work/users/j/s/jsikder/fordan/tree2
+  output_dir_2: None
+---
+- name: tree3
+  data: datasets/treeMatrices/tree3_matrices.npy
+  labels: datasets/treeLabels/tree3.txt
+  batch_size: 1
+  num_output_files: 300
+  shuffle: False
+  output_dir: /work/users/j/s/jsikder/fordan/tree3
+  output_dir_2: None
+---
+- name: tree4
+  data: datasets/treeMatrices/tree4_matrices.npy
+  labels: datasets/treeLabels/tree4.txt
+  batch_size: 1
+  num_output_files: 300
+  shuffle: False
+  output_dir: /work/users/j/s/jsikder/fordan/tree4
   output_dir_2: None
