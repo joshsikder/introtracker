@@ -2,17 +2,19 @@
   data: datasets/treeMatrices/tree1_matrices.npy
   labels: datasets/treeLabels/tree1.txt
   batch_size: 1
-  num_output_files: 3000
-  shuffle: True
-  output_dir: /work/users/j/s/jsikder/fordan/temp3
-  output_dir_2: None
+  num_output_files: 500
+  x_shuffle: None
+  y_shuffle: True
+  output_dir: /work/users/j/s/jsikder/fordan/temp
+  output_dir_2: /work/users/j/s/jsikder/fordan/temp2
 ---
 - name: tree1
   data: datasets/treeMatrices/tree1_matrices.npy
   labels: datasets/treeLabels/tree1.txt
   batch_size: 1
   num_output_files: 300
-  shuffle: False
+  x_shuffle: None
+  y_shuffle: True
   output_dir: /work/users/j/s/jsikder/fordan/tree1
   output_dir_2: None
 ---
@@ -21,7 +23,8 @@
   labels: datasets/treeLabels/tree2.txt
   batch_size: 1
   num_output_files: 300
-  shuffle: False
+  x_shuffle: None
+  y_shuffle: True
   output_dir: /work/users/j/s/jsikder/fordan/tree2
   output_dir_2: None
 ---
@@ -30,7 +33,8 @@
   labels: datasets/treeLabels/tree3.txt
   batch_size: 1
   num_output_files: 300
-  shuffle: False
+  x_shuffle: None
+  y_shuffle: True
   output_dir: /work/users/j/s/jsikder/fordan/tree3
   output_dir_2: None
 ---
@@ -39,6 +43,7 @@
   labels: datasets/treeLabels/tree4.txt
   batch_size: 1
   num_output_files: 300
-  shuffle: False
+  x_shuffle: None
+  y_shuffle: True
   output_dir: /work/users/j/s/jsikder/fordan/tree4
   output_dir_2: None

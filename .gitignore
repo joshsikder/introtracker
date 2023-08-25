@@ -9,3 +9,4 @@ workflow/Snakefile
 workflow/models/**
 workflow/notebooks/**
 workflow/scripts/__pycache__/**
+workflow/**best_weights**

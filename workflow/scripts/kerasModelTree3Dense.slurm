@@ -12,5 +12,6 @@
 #SBATCH --error=/nas/longleaf/home/jsikder/schriderlab/ignored/slurm_output/kerasDenseSPFTree3_%A.err
 
 source activate /nas/longleaf/home/jsikder/.conda/envs/josh
+conda activate /nas/longleaf/home/jsikder/.conda/envs/josh 
 
 python /nas/longleaf/home/jsikder/introtracker/workflow/scripts/KerasModelDenseSPF.py -a /nas/longleaf/home/jsikder/introtracker/workflow/datasets/rfData/tree3.npz -s tree3 -o /nas/longleaf/home/jsikder/introtracker/workflow/models
