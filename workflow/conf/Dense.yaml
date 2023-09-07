@@ -1,6 +1,7 @@
 - name: temp1
   inputs: /work/users/j/s/jsikder/fordan/temp/
   output: /nas/longleaf/home/jsikder/introtracker/workflow/models
+  model: createDense
   ntaxa: 3
   loci_count: 100
   loci_length: 1200
@@ -18,6 +19,7 @@
 - name: temp2
   inputs: /work/users/j/s/jsikder/fordan/temp2/
   output: /nas/longleaf/home/jsikder/introtracker/workflow/models
+  model: createDense
   ntaxa: 3
   loci_count: 100
   loci_length: 1200
@@ -26,7 +28,7 @@
   shuffle: True
   labelCorrection: 0
   batch_size: 1
-  epochs: 50
+  epochs: 5
   train_start: 0
   train_end: 500
   val_start: 0
@@ -43,7 +45,7 @@
   shuffle: True
   labelCorrection: 0
   batch_size: 1
-  epochs: 50
+  epochs: 5
   train_start: 0
   train_end: 500
   val_start: 0
@@ -60,7 +62,7 @@
   shuffle: True
   labelCorrection: 0
   batch_size: 1
-  epochs: 50
+  epochs: 5
   train_start: 0
   train_end: 300
   val_start: 0
@@ -75,9 +77,9 @@
   n_classes: 4
   n_channels: 1
   shuffle: True
-  labelCorrection: 0
+  labelCorrection: 4
   batch_size: 1
-  epochs: 50
+  epochs: 5
   train_start: 0
   train_end: 300
   val_start: 0
@@ -92,9 +94,9 @@
   n_classes: 4
   n_channels: 1
   shuffle: True
-  labelCorrection: 0
+  labelCorrection: 7
   batch_size: 1
-  epochs: 50
+  epochs: 5
   train_start: 0
   train_end: 300
   val_start: 0
@@ -109,9 +111,9 @@
   n_classes: 4
   n_channels: 1
   shuffle: True
-  labelCorrection: 0
+  labelCorrection: 10
   batch_size: 1
-  epochs: 50
+  epochs: 5
   train_start: 0
   train_end: 300
   val_start: 0

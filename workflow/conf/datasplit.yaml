@@ -1,49 +1,59 @@
-- name: temptree
-  data: datasets/treeMatrices/tree1_matrices.npy
-  labels: datasets/treeLabels/tree1.txt
+- name: temp1
+  data: /nas/longleaf/home/jsikder/introtracker/workflow/datasets/treeMatrices/tree1_matrices.npy
+  labels: /nas/longleaf/home/jsikder/introtracker/workflow/datasets/treeLabels/tree1.txt
   batch_size: 1
   num_output_files: 500
-  x_shuffle: None
+  x_shuffle: ~
   y_shuffle: True
-  output_dir: /work/users/j/s/jsikder/fordan/temp
-  output_dir_2: /work/users/j/s/jsikder/fordan/temp2
+  output_dir: /work/users/j/s/jsikder/fordan/temp # unmodified step
+  output_dir_2: /work/users/j/s/jsikder/fordan/temp2 # modified step
+---
+- name: temp2
+  data: /nas/longleaf/home/jsikder/introtracker/workflow/datasets/treeMatrices/tree1_matrices.npy
+  labels: /nas/longleaf/home/jsikder/introtracker/workflow/datasets/treeLabels/tree1.txt
+  batch_size: 1
+  num_output_files: 500
+  x_shuffle: True
+  y_shuffle: ~
+  output_dir: /work/users/j/s/jsikder/fordan/temp3 # unmodified step
+  output_dir_2: /work/users/j/s/jsikder/fordan/temp4 # modified step
 ---
 - name: tree1
-  data: datasets/treeMatrices/tree1_matrices.npy
-  labels: datasets/treeLabels/tree1.txt
+  data: /nas/longleaf/home/jsikder/introtracker/workflow/datasets/treeMatrices/tree1_matrices.npy
+  labels: /nas/longleaf/home/jsikder/introtracker/workflow/datasets/treeLabels/tree1.txt
   batch_size: 1
   num_output_files: 300
-  x_shuffle: None
-  y_shuffle: True
+  x_shuffle: ~
+  y_shuffle: ~
   output_dir: /work/users/j/s/jsikder/fordan/tree1
-  output_dir_2: None
+  output_dir_2: ~
 ---
 - name: tree2
-  data: datasets/treeMatrices/tree2_matrices.npy
-  labels: datasets/treeLabels/tree2.txt
+  data: /nas/longleaf/home/jsikder/introtracker/workflow/datasets/treeMatrices/tree2_matrices.npy
+  labels: /nas/longleaf/home/jsikder/introtracker/workflow/datasets/treeLabels/tree2.txt
   batch_size: 1
   num_output_files: 300
-  x_shuffle: None
-  y_shuffle: True
+  x_shuffle: ~
+  y_shuffle: ~
   output_dir: /work/users/j/s/jsikder/fordan/tree2
-  output_dir_2: None
+  output_dir_2: ~
 ---
 - name: tree3
-  data: datasets/treeMatrices/tree3_matrices.npy
-  labels: datasets/treeLabels/tree3.txt
+  data: /nas/longleaf/home/jsikder/introtracker/workflow/datasets/treeMatrices/tree3_matrices.npy
+  labels: /nas/longleaf/home/jsikder/introtracker/workflow/datasets/treeLabels/tree3.txt
   batch_size: 1
   num_output_files: 300
-  x_shuffle: None
-  y_shuffle: True
+  x_shuffle: ~
+  y_shuffle: ~
   output_dir: /work/users/j/s/jsikder/fordan/tree3
-  output_dir_2: None
+  output_dir_2: ~
 ---
 - name: tree4
-  data: datasets/treeMatrices/tree4_matrices.npy
-  labels: datasets/treeLabels/tree4.txt
+  data: /nas/longleaf/home/jsikder/introtracker/workflow/datasets/treeMatrices/tree4_matrices.npy
+  labels: /nas/longleaf/home/jsikder/introtracker/workflow/datasets/treeLabels/tree4.txt
   batch_size: 1
   num_output_files: 300
-  x_shuffle: None
-  y_shuffle: True
+  x_shuffle: ~
+  y_shuffle: ~
   output_dir: /work/users/j/s/jsikder/fordan/tree4
-  output_dir_2: None
+  output_dir_2: ~

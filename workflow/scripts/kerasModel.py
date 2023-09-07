@@ -53,7 +53,6 @@ model = layers.MaxPooling2D((1,2))(model)
 model = layers.Conv2D(128, 3, strides = 1, padding = "same", activation="relu")(model)
 model = layers.MaxPooling2D((1,2))(model)
 model = layers.Flatten()(model)
-# model = layers.Dense(1000, activation="relu")(model)
 model = layers.Dense(14, activation="softmax")(model)
 
 myModel = Model(seq_inputs, model)

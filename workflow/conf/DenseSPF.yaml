@@ -1,0 +1,27 @@
+- name: tree1
+  inputs: /nas/longleaf/home/jsikder/introtracker/workflow/datasets/rfData/tree1.npz
+  weights_output: /nas/longleaf/home/jsikder/introtracker/workflow/weights
+  model_output: /nas/longleaf/home/jsikder/introtracker/workflow/models
+  n_classes: 4
+  epochs: 10
+---
+- name: tree2
+  inputs: /nas/longleaf/home/jsikder/introtracker/workflow/datasets/rfData/tree2.npz
+  weights_output: /nas/longleaf/home/jsikder/introtracker/workflow/weights
+  model_output: /nas/longleaf/home/jsikder/introtracker/workflow/models
+  n_classes: 4
+  epochs: 10
+---
+- name: tree3
+  inputs: /nas/longleaf/home/jsikder/introtracker/workflow/datasets/rfData/tree3.npz
+  weights_output: /nas/longleaf/home/jsikder/introtracker/workflow/weights
+  model_output: /nas/longleaf/home/jsikder/introtracker/workflow/models
+  n_classes: 4
+  epochs: 10
+---
+- name: tree4
+  inputs: /nas/longleaf/home/jsikder/introtracker/workflow/datasets/rfData/tree4.npz
+  weights_output: /nas/longleaf/home/jsikder/introtracker/workflow/weights
+  model_output: /nas/longleaf/home/jsikder/introtracker/workflow/models
+  n_classes: 4
+  epochs: 10

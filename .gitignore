@@ -10,3 +10,5 @@ workflow/models/**
 workflow/notebooks/**
 workflow/scripts/__pycache__/**
 workflow/**best_weights**
+workflow/scripts/mnistCNN.py
+workflow/weights/**

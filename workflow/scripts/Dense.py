@@ -1,15 +1,10 @@
 #!/usr/bin/env python
-import sys, os, argparse
+import sys, os, argparse, inspect
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 from tensorflow.keras.callbacks import ModelCheckpoint, EarlyStopping
 from datagenerator import DataGenerator
-import models
+from models import Models as models
 from genutils import GeneralUtilities as gu
-
-
-def parseConfig(cfgFile, cfg):
-    configurations = gu.readKerasConfig(cfgFile)
-    return configurations[cfg]
 
 def buildGenerators(config):
     inputs = config['inputs']
@@ -41,13 +36,14 @@ def buildGenerators(config):
                 
     training_generator = DataGenerator(partitionTest['train'], **params)
     validation_generator = DataGenerator(partitionTest['validation'], **params)
+
     return training_generator, validation_generator
 
 def runModel(model, trainer, validator, data, es = False, cp = False):
     if es == True:
         earlystop=EarlyStopping(monitor='val_loss', min_delta=0.0001, patience=10, verbose=1, mode='auto')
     if cp == True:
-        checkpoint = ModelCheckpoint(f'best_weights_batch_{data["batch_size"]}.txt', monitor='val_loss', 
+        checkpoint = ModelCheckpoint(f'{sys.argv[0].rstrip(".py")}best_weights_batch_{data["batch_size"]}.txt', monitor='val_loss', 
             verbose=0, save_best_only=True, save_weights_only=False, mode='auto', period=1)
     if es == True and cp == True:
         model.fit(x=trainer, validation_data=validator, 
@@ -66,20 +62,27 @@ def main():
     parser.add_argument( '--summary', help = "Display model summary",dest='modelSummary', action='store_true')
     args = parser.parse_args()
     
-    dataset = parseConfig(args.cfgFile, args.cfg)
+    dataset = gu.readMultiConfig(args.cfgFile, args.cfg)
     tgen, vgen = buildGenerators(dataset)
     
-    myModel = models.createDense((dataset['ntaxa'],
-                                  dataset['loci_count']*dataset['loci_length'],
-                                  dataset['n_channels']),
-                                  dataset['n_classes'])
+    # myModel = models.createDense((dataset['ntaxa'],
+    #                               dataset['loci_count']*dataset['loci_length'],
+    #                               dataset['n_channels']),
+    #                               dataset['n_classes'])
+    
+    inputShape = (dataset['ntaxa'],
+                  dataset['loci_count']*dataset['loci_length'],
+                  dataset['n_channels'])
+    arguments = [inputShape, dataset['n_classes']]
+    method = getattr(models(), dataset['model'])
+    myModel = method(*arguments)
     
     if args.modelSummary == True:
         myModel.summary()
     if args.runModel == True:
         runModel(myModel, tgen, vgen, dataset, False, False)
     if args.saveModel == True:
-        myModel.save(f"{dataset['output']}/model_bs{dataset['batch_size']}_introprop{args.cfg}.keras")
+        myModel.save(f"{dataset['output']}/{sys.argv[0].rstrip('.py')}_bs_{dataset['batch_size']}_introprop_{args.cfg}.keras")
 
 if __name__ == '__main__':
     main()

@@ -5,10 +5,6 @@ from sklearn.model_selection import train_test_split
 from genutils import GeneralUtilities as gu
 import argparse
 
-def parseConfig(cfgFile, cfg):
-    configurations = gu.readDatasetsConfig(cfgFile)
-    return configurations[cfg]
-
 def remove_files_if_directory_not_empty(directory):
     if not os.path.isdir(directory):
         print(f"{directory} is not a directory")
@@ -49,10 +45,11 @@ def makeFiles(data, labels, idxs, path, path2, batch_size, x_shuffle, y_shuffle,
         if x_shuffle == True and path2 != None:
             indices = np.random.permutation(batch_data.shape[2])
             batch_data_shuf = batch_data[:,:,indices,:]
+            np.savez(f"{path.rstrip('/')}/{idx}_{dataset}_data.npz", **{"X": batch_data, "y": batch_labs})
             np.savez(f"{path2.rstrip('/')}/{idx}_{dataset}_data.npz", **{"X": batch_data_shuf, "y": batch_labs})
         elif y_shuffle == True and path2 != None:
-            np.savez(f"{path.rstrip('/')}/{idx}_{dataset}_data.npz", **{"X": batch_data, "y": batch_labs})
             batch_labs_shuf = labels_shuf[batch_idxs]
+            np.savez(f"{path.rstrip('/')}/{idx}_{dataset}_data.npz", **{"X": batch_data, "y": batch_labs})
             np.savez(f"{path2.rstrip('/')}/{idx}_{dataset}_data.npz", **{"X": batch_data, "y": batch_labs_shuf})
         else:
             np.savez(f"{path.rstrip('/')}/{idx}_{dataset}_data.npz", **{"X": batch_data, "y": batch_labs})
@@ -65,7 +62,7 @@ def main():
     
     cfgFile = args.configfile
     cfg = args.config
-    dataset = parseConfig(cfgFile, cfg)
+    dataset = gu.readMultiConfig(cfgFile, cfg)
 
     dataPath = dataset['data']
     labelsPath = dataset['labels']
