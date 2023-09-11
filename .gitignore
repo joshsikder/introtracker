@@ -1,0 +1,10 @@
+**/.snakemake/**
+ignored/**
+**/to_do.txt
+**/datasets/**
+__pycache__/**
+**best_weights**
+**mnistCNN.py
+weights/**
+**/*.slurm
+**.visSitePatternsTable.py
