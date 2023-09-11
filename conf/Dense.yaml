@@ -1,7 +1,7 @@
 - name: temp1
-  inputs: /work/users/j/s/jsikder/fordan/temp/
+  inputs: /work/users/j/s/jsikder/fordan/temp2/
   output: /nas/longleaf/home/jsikder/introtracker/workflow/models
-  model: createDense
+  model: createCNN
   ntaxa: 3
   loci_count: 100
   loci_length: 1200
@@ -14,12 +14,12 @@
   train_start: 0
   train_end: 500
   val_start: 0
-  val_end: 100
+  val_end: 300
 ---
 - name: temp2
-  inputs: /work/users/j/s/jsikder/fordan/temp2/
+  inputs: /work/users/j/s/jsikder/fordan/temp4/
   output: /nas/longleaf/home/jsikder/introtracker/workflow/models
-  model: createDense
+  model: createCNN
   ntaxa: 3
   loci_count: 100
   loci_length: 1200
@@ -28,11 +28,11 @@
   shuffle: True
   labelCorrection: 0
   batch_size: 1
-  epochs: 5
+  epochs: 50
   train_start: 0
   train_end: 500
   val_start: 0
-  val_end: 100
+  val_end: 300
 ---
 - name: temp3
   inputs: /work/users/j/s/jsikder/fordan/temp3/

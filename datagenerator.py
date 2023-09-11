@@ -51,8 +51,6 @@ class DataGenerator(Sequence):
 
         # Generate data
         for i, ID in enumerate(list_IDs_temp):
-            # print(f'i: {i} file: /work/users/j/s/jsikder/fordan/tree1/{i}_data.npz')
-            # print(f'id: {ID} file: /work/users/j/s/jsikder/fordan/tree1/{ID}_data.npz')
             arr = np.load(f"{self.arraypath.rstrip('/')}/{ID}_data.npz")
             
             # Store sample

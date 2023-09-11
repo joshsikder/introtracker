@@ -5,7 +5,7 @@
   num_output_files: 500
   x_shuffle: ~
   y_shuffle: True
-  output_dir: /work/users/j/s/jsikder/fordan/temp # unmodified step
+  output_dir: /work/users/j/s/jsikder/fordan/temp1 # unmodified step
   output_dir_2: /work/users/j/s/jsikder/fordan/temp2 # modified step
 ---
 - name: temp2
@@ -27,6 +27,16 @@
   y_shuffle: ~
   output_dir: /work/users/j/s/jsikder/fordan/tree1
   output_dir_2: ~
+---
+- name: tree1shuffle
+  data: /nas/longleaf/home/jsikder/introtracker/workflow/datasets/treeMatrices/tree1_matrices.npy
+  labels: /nas/longleaf/home/jsikder/introtracker/workflow/datasets/treeLabels/tree1.txt
+  batch_size: 1
+  num_output_files: ~
+  x_shuffle: ~
+  y_shuffle: True
+  output_dir: /work/users/j/s/jsikder/fordan/temp5
+  output_dir_2: /work/users/j/s/jsikder/fordan/temp6
 ---
 - name: tree2
   data: /nas/longleaf/home/jsikder/introtracker/workflow/datasets/treeMatrices/tree2_matrices.npy

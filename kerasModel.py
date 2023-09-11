@@ -22,28 +22,29 @@ parser.add_argument( '-intro', help = "Introgression scenario",dest='SCENARIO')
 parser.add_argument( '-out', help = "File Location of saved model(.h5)",dest='OUTPUT')
 args = parser.parse_args()
 
-# print(tf.test.is_built_with_cuda());print(tf.config.list_physical_devices('GPU'))
 #CONFIG
-ntaxa = 4
+ntaxa = 3
 loci_count = 100
 loci_length = 1200
 aln_length = loci_count * loci_length
 # Parameters
 params = {'dim': (ntaxa,aln_length,1),
-          'batch_size': int(args.BATCHSIZE),
-          'n_classes': 14,
-          'n_channels': 1,
-          'shuffle': True}
+            'batch_size': 1,
+            'arraypath': "/work/users/j/s/jsikder/fordan/tree1/",
+            'labelCorrection': 0,
+            'n_classes': 14,
+            'n_channels': 1,
+            'shuffle': True}
 
-partition = {'train': ['id-'+str(i) for i in range(0,29335)], 
-             'validation': ['id-'+str(i) for i in range(29335,44001)]} #tree 1,4
+partition = {'train': [f'{i}_train' for i in range(0,500)], 
+             'validation': [f'{i}_test' for i in range(0,300)]} #tree 1,4
 # partition = {'train': ['id-'+str(i) for i in range(0,22001)], 
 #              'validation': ['id-'+str(i) for i in range(22001,33001)]} #tree 2,3
              
 training_generator = DataGenerator(partition['train'], **params)
 validation_generator = DataGenerator(partition['validation'], **params)
 
-seq_inputs = keras.Input(shape=(ntaxa, aln_length,1))
+seq_inputs = layers.Input(shape=(ntaxa, aln_length,1))
 model = layers.Conv2D(128, 3, strides = 1, padding = "same", activation="relu")(seq_inputs)
 model = layers.MaxPooling2D((1,2))(model)
 model = layers.Conv2D(128, 3, strides = 1, padding = "same", activation="relu")(model)
@@ -64,7 +65,8 @@ earlystop=EarlyStopping(monitor='val_loss', min_delta=0.0001, patience=10, verbo
 checkpoint = ModelCheckpoint('best_weights_batch_'+str(args.BATCHSIZE), monitor='val_loss', 
 verbose=0, save_best_only=True, save_weights_only=False, mode='auto', period=1)
 
-myModel.fit(x=training_generator, validation_data=validation_generator, callbacks=[checkpoint,earlystop], epochs=50)
+# myModel.fit(x=training_generator, validation_data=validation_generator, callbacks=[checkpoint,earlystop], epochs=50)
+myModel.fit(x=training_generator, validation_data=validation_generator, epochs=50)
 # myModel.save(str(args.OUTPUT) + f"model_bs{args.BATCHSIZE}_introprop{args.SCENARIO}.h5")
-myModel.save(f"{args.OUTPUT}/model_bs{args.BATCHSIZE}_introprop{args.SCENARIO}.h5")
+# myModel.save(f"{args.OUTPUT}/model_bs{args.BATCHSIZE}_introprop{args.SCENARIO}.h5")
 

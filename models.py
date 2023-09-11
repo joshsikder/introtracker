@@ -1,11 +1,12 @@
 from tensorflow.keras import layers
 from tensorflow.keras.models import Model
+from tensorflow.keras.optimizers import Adam
 import tensorflow as tf
 
 class Models:
     def createCNN(*args):
-        inputs = keras.Input(shape=args[1])
-        model = layers.Conv2D(64, 3, strides = 1, padding = "same", activation="relu")(inputs)
+        inputs = layers.Input(shape=args[1])
+        model = layers.Conv2D(64, 3, kernel_initializer='he_normal', strides = 1, padding = "same", activation="relu")(inputs)
         model = layers.MaxPooling2D((1,2))(model)
         model = layers.Conv2D(128, 3, strides = 1, padding = "same", activation="relu")(model)
         model = layers.MaxPooling2D((1,2))(model)
@@ -17,8 +18,9 @@ class Models:
         class_output = layers.Dense(args[2], activation="softmax", name="class_output")(model)
 
         model = Model(inputs=[inputs], outputs=[class_output], name="CNN_Tree")
+        optimizer = Adam(lr=0.00001)
         model.compile(loss=tf.keras.losses.CategoricalCrossentropy(),
-                        optimizer="adam",metrics=["accuracy"])
+                        optimizer=optimizer,metrics=["accuracy"])
             
         return model
 

@@ -16,7 +16,6 @@ def buildGenerators(config):
     shuffle = config['shuffle']
     labelCorrection = config['labelCorrection']
     batch_size = config['batch_size']
-    epochs = config['epochs']
     train_start = config['train_start']
     train_end = config['train_end']
     val_start = config['val_start']
@@ -53,22 +52,22 @@ def runModel(model, trainer, validator, data, es = False, cp = False):
         model.fit(x=trainer, validation_data=validator, 
                   epochs=data['epochs'])
 
+def extractFeatures(model, dataset):
+    
+    pass
+
 def main():
     parser = argparse.ArgumentParser(description='Keras model for detecting introgression')
     parser.add_argument( '--configfile', '-cf', help = "Configuration file",dest='cfgFile')
     parser.add_argument( '--config', '-c', help = "Settings set",dest='cfg')
     parser.add_argument( '--run', '-r', help = "Run model (absence will dryrun the model)",dest='runModel', action='store_true')
     parser.add_argument( '--save', help = "Save model",dest='saveModel', action='store_true')
-    parser.add_argument( '--summary', help = "Display model summary",dest='modelSummary', action='store_true')
+    parser.add_argument( '--summary', help = "Display model summary", dest='modelSummary', action='store_true')
+    parser.add_argument( '--predict', '-p', help = "prediction for feature extraction", dest='extractFeatures', action='store_true')
     args = parser.parse_args()
     
     dataset = gu.readMultiConfig(args.cfgFile, args.cfg)
-    tgen, vgen = buildGenerators(dataset)
-    
-    # myModel = models.createDense((dataset['ntaxa'],
-    #                               dataset['loci_count']*dataset['loci_length'],
-    #                               dataset['n_channels']),
-    #                               dataset['n_classes'])
+    print(f'ModelConfig: {dataset["model"]} dataset: {args.cfg} file: {dataset["inputs"].rstrip("/").split("/")[-1]}')
     
     inputShape = (dataset['ntaxa'],
                   dataset['loci_count']*dataset['loci_length'],
@@ -80,7 +79,10 @@ def main():
     if args.modelSummary == True:
         myModel.summary()
     if args.runModel == True:
+        tgen, vgen = buildGenerators(dataset)
         runModel(myModel, tgen, vgen, dataset, False, False)
+    if args.extractFeatures == True:
+        extractFeatures(myModel, dataset)
     if args.saveModel == True:
         myModel.save(f"{dataset['output']}/{sys.argv[0].rstrip('.py')}_bs_{dataset['batch_size']}_introprop_{args.cfg}.keras")
 
