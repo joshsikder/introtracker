@@ -6,5 +6,5 @@ __pycache__/**
 **best_weights**
 **mnistCNN.py
 weights/**
-**/*.slurm/
+**/*.slurm
 **.visSitePatternsTable.py
