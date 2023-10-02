@@ -4,7 +4,7 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 from tensorflow.keras.callbacks import ModelCheckpoint, EarlyStopping
 from datagenerator import DataGenerator
 from models import Models as models
-from genutils import GeneralUtilities as gu
+from utils.file_utils import GeneralUtilities as gu
 
 def buildGenerators(config):
     inputs = config['inputs']
@@ -67,8 +67,8 @@ def main():
     args = parser.parse_args()
     
     dataset = gu.readMultiConfig(args.cfgFile, args.cfg)
-    print(f'ModelConfig: {dataset["model"]} dataset: {args.cfg} file: {dataset["inputs"].rstrip("/").split("/")[-1]}')
-    
+    # print(f'ModelConfig: {dataset["model"]} dataset: {args.cfg} file: {dataset["inputs"].rstrip("/").split("/")[-1]}')
+    print(f'Running on subset {dataset["inputs"].split("/")[-2]} with model {dataset["model"]}')
     inputShape = (dataset['ntaxa'],
                   dataset['loci_count']*dataset['loci_length'],
                   dataset['n_channels'])

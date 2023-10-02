@@ -2,7 +2,7 @@ import os
 import numpy as np
 from tqdm import tqdm
 from sklearn.model_selection import train_test_split
-from genutils import GeneralUtilities as gu
+from utils.file_utils import GeneralUtilities as gu
 import argparse
 
 def remove_files_if_directory_not_empty(directory):
@@ -22,9 +22,26 @@ def remove_files_if_directory_not_empty(directory):
     else:
         print(f"{directory} is empty")
 
-def makeFiles(data, labels, idxs, path, path2, batch_size, x_shuffle, y_shuffle, dataset, numOut):
+def downsampleData(data, proportion):
+    if proportion < 0 or proportion > 100:
+        raise ValueError("Downsample percentage must be between 0 and 100")
+    block_size = 1200
+    num_blocks = int(data.shape[2] / block_size)
+    num_blocks_to_remove = int(num_blocks * proportion / 100)
+    num_elements_to_remove = int(num_blocks_to_remove * block_size)
+    block_indices = np.random.choice(num_blocks, size=num_blocks_to_remove, replace=False)
+    # slices_to_keep = [np.s_[:, :, i*block_size:(i+1)*block_size, :] for i in range(num_blocks_to_remove, num_blocks)]
+    slices_to_keep = []
+    for i in range(num_blocks):
+        if i not in block_indices:
+            slices_to_keep.append(np.s_[:, :, i*block_size:(i+1)*block_size, :])
+    newData = np.concatenate([data[slice] for slice in slices_to_keep], axis=2)
+    return newData
+
+def makeFiles(data, labels, idxs, path, path2, batch_size, x_shuffle, y_shuffle, dataset, numOut, ds):
     inds = idxs
     ind_arrays = []
+    labels_shuf = None
     if y_shuffle == True:
         labels_shuf = np.random.permutation(labels)
     if numOut:
@@ -42,6 +59,9 @@ def makeFiles(data, labels, idxs, path, path2, batch_size, x_shuffle, y_shuffle,
     for idx, batch_idxs in tqdm(enumerate(ind_arrays), desc=f"Saving {dataset} files", total=len(ind_arrays)):
         batch_data = data[batch_idxs]
         batch_labs = labels[batch_idxs]
+        if ds != None and ds >= 0 and ds <= 99:
+            batch_data = downsampleData(batch_data, ds)
+            np.savez(f"{path.rstrip('/')}/{idx}_{dataset}_data.npz", **{"X": batch_data, "y": batch_labs})
         if x_shuffle == True and path2 != None:
             indices = np.random.permutation(batch_data.shape[2])
             batch_data_shuf = batch_data[:,:,indices,:]
@@ -58,6 +78,7 @@ def main():
     parser = argparse.ArgumentParser(description='Splits data to be passed as input to the data generator for Keras')
     parser.add_argument( '--config-file', '-cf', help = "Configuration filepath",dest='configfile', required = True, type=str)
     parser.add_argument( '--config', '-c', help = "Set of configurations",dest='config', required = True, type=str)
+    parser.add_argument( '--downsample', '-ds', help = "Downsample (true/false)",dest='downsample', type=int, required = False)
     args = parser.parse_args()
     
     cfgFile = args.configfile
@@ -72,6 +93,7 @@ def main():
     yshuffle = dataset['y_shuffle']
     outputPath = dataset['output_dir']
     outputPath2 = dataset['output_dir_2']
+    downsample = dataset.get('downsample')
 
     remove_files_if_directory_not_empty(outputPath)
     if outputPath2 != None:
@@ -89,10 +111,11 @@ def main():
 
     makeFiles(X, y, test_idxs, outputPath, 
             outputPath2, batchsize, xshuffle, 
-            yshuffle, 'test', numOutput)
+            yshuffle, 'test', numOutput, downsample)
     makeFiles(X, y, train_idxs, outputPath,
             outputPath2, batchsize, xshuffle,
-            yshuffle, 'train', numOutput)
+            yshuffle, 'train', numOutput, downsample)
 
 if __name__ == '__main__':
     main()
+    

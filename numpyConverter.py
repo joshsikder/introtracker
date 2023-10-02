@@ -6,8 +6,8 @@ from math import log, ceil
 from scipy.stats import multinomial, chi2
 from math import factorial
 
-#WRITTEN BY A.SUVOROV
-###Convert TRAIN TEST to numeric and save as numpy array
+### WRITTEN BY A.SUVOROV
+### Convert TRAIN TEST to numeric and save as numpy array
 def get_n_taxa(aln_file):
     aln_file_open=open(aln_file)
     all_taxa = [ str(r) for r in aln_file_open if r[0]==">"]
